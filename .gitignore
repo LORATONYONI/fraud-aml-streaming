@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Terraform (keep .terraform.lock.hcl: it pins provider versions and checksums)
+.terraform/
+infra/terraform/build/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+
+# Local Kafka-mode detector state (SQLite)
+.local/
+
+# Data: PaySim is ~470 MB, download it yourself (see data/README.md)
+data/*
+!data/README.md
+
+.DS_Store

@@ -1,0 +1,22 @@
+[project]
+name = "fraud-aml-streaming"
+version = "0.1.0"
+description = "Real-time fraud and AML detection on mobile-money transactions, serverless on AWS free tier"
+requires-python = ">=3.9"
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]
+testpaths = ["tests"]
+addopts = "-q -p no:cacheprovider"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["UP007", "UP045"]  # keep Optional[...] in runtime type aliases (Python 3.9 compatible)
+
+[tool.ruff.lint.isort]
+known-first-party = ["fraud_aml", "helpers"]
