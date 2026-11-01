@@ -132,6 +132,29 @@ scanning about 30 KB each.
 - `HIGH_VALUE_TRANSFER` never fires on the synthetic data (no transfers that large). It exists for
   PaySim, which has many.
 
+## Screenshots from the live AWS deployment
+
+**Alerts raised by the detector** (DynamoDB, queried with PartiQL): each alert has its rule, severity and a readable reason.
+
+![Alerts in DynamoDB](docs/images/dynamodb-alerts.png)
+
+**Detection quality measured in Athena** (the saved `scenario_recall` query, run over the S3 data lake): every injected case was caught, after scanning only 79 KB.
+
+![Athena scenario recall](docs/images/athena-scenario-recall.png)
+
+**The detector Lambda:** it's triggered by the DynamoDB stream, with an SQS dead-letter queue for failed batches. It had 20 invocations, 0 errors and a 100% success rate.
+
+![Lambda detector triggers](docs/images/lambda-detector-triggers.png)
+![Lambda detector metrics](docs/images/lambda-detector-metrics.png)
+
+**Pipeline health:** five CloudWatch alarms (Lambda errors, stream lag, dead-letter queue), all OK.
+
+![CloudWatch alarms](docs/images/cloudwatch-alarms.png)
+
+**The bronze layer in S3:** gzipped NDJSON batches under `bronze/transactions/event_date=YYYY-MM-DD/`, the layout Athena's partition projection reads.
+
+![S3 bronze partition](docs/images/s3-bronze-partition.png)
+
 ## Design decisions
 
 **DynamoDB Streams instead of Kinesis or Kafka.** Kinesis bills for every hour a shard exists, and
